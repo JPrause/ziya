@@ -67,7 +67,7 @@ module Ziya::HtmlHelpers::Charts
     xml_swf_path << "&timestamp=#{Time.now.to_i}" if options[:cache] == false
     xml_swf_path << "&timeout=#{options[:timeout]}&retry=#{options[:retry]}" if options[:timeout]
     xml_swf_path << "&stage_width=#{options[:width]}&stage_height=#{options[:height]}" if options[:use_stage] == true 
-    
+
     js = <<-JS
       <script language="javascript" type="text/javascript">
       if (AC_FL_RunContent == 0 || DetectFlashVer == 0) {
@@ -77,7 +77,7 @@ module Ziya::HtmlHelpers::Charts
         var hasRightVersion = DetectFlashVer(requiredMajorVersion, requiredMinorVersion, requiredRevision);
         if( hasRightVersion ) { 
           AC_FL_RunContent(
-            'codebase'         , 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,45,2',
+            'codebase'         , 'https://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,45,2',
             'width'            , '#{options[:width]}',
             'height'           , '#{options[:height]}',
             'scale'            , '#{options[:scale]}',
@@ -141,7 +141,7 @@ module Ziya::HtmlHelpers::Charts
   def charts_swf()         "#{charts_swf_base}&xml_source=%s"; end      
   def chart_path()         "/charts"; end       
   def class_id()           "clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" end
-  def codebase()           "http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,45,2"; end
+  def codebase()           "https://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,45,2"; end
 
   # generates swf path
   def gen_swf_path( path_directive, swf_dir, url )
