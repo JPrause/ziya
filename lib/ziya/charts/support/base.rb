@@ -23,7 +23,7 @@ module Ziya::Charts::Support
           attributes[class_name] = [] if attributes[class_name].nil?
           attributes[class_name] << attribute
           # create the accessor methods for the attribute
-          meths = self.instance_methods.to_s
+          meths = self.instance_methods.collect { |m| m.to_s }
           unless meths.include?(attribute.to_s) && meths.include?("#{attribute.to_s}=")
             self.module_eval "attr_accessor :#{attribute}"
           end
