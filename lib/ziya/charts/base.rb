@@ -255,8 +255,7 @@ module Ziya::Charts
         setup_lnf
         setup_series
       end
-      @xml.to_s.gsub( /<to_s\/>/, '' )
-      out
+      out.to_s.gsub( /<to_s\/>/, '' )
     end                                       
     # dumps the chart design to xml for client side consumption
     alias to_xml to_s  
