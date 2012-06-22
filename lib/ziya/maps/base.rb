@@ -223,8 +223,7 @@ module Ziya::Maps
           setup_series
         end         
       end
-      @xml.to_s.gsub( /<to_s\/>/, '' )
-      out
+      out.to_s.gsub( /<to_s\/>/, '' )
     end                                       
     # dumps the map design to xml for client side consumption
     alias to_xml to_s  
