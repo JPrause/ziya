@@ -108,8 +108,30 @@ describe Ziya::Charts::Base do
     end    
     it "should error if the user data has no key" do
       lambda { @chart.add( :user_data, :fred, "blee") }.should_not raise_error( ArgumentError, /specify a key/i )
-    end    
-    
+    end
+
+    it "embedded javascript url with single quotes" do
+      @chart = Ziya::Charts::Base.new("HTA9VRF7P2O.H4X5CWK-2XOI1X0-7L")
+      @chart.add(:theme, "miq")
+      @chart.add(:user_data, :title, "CPU (Mhz)")
+      @chart.add(:user_data, :show_title, true)
+      @chart.add(:user_data, :graph_options, {:title=>"CPU (Mhz)", :type=>"Line", :columns=>["cpu_usagemhz_rate_average", "max_derived_cpu_available", "min_cpu_usagemhz_rate_average", "max_cpu_usagemhz_rate_average", "trend_max_cpu_usagemhz_rate_average"], :menu=>["Chart-Current-Hourly:Hourly for this day", "Chart-VMs-topday:Top VMs on this day", "Timeline-Current-Daily:Daily events on this Host", "Timeline-Current-Hourly:Hourly events on this Host", "Display-VMs-on:VMs that were running"], :trends=>["max_derived_cpu_available:Projected to hit available"], :chart2=>{:type=>"Line", :title=>"VMs", :columns=>["derived_vm_count_on"]}, :link_url=>"javascript:miqAsyncAjax('/host/perf_chart_chooser/5?chart_link=0')" , :zoom_url=>"javascript:miqAsyncAjax('/host/perf_chart_chooser/5?chart_zoom=0')", :link_data_url=>"javascript:miqChartLinkData( _col_, _row_, _value_, _category_, _series_, _id_ )", :axis_skip=>3, :chart_type=>:performance, :width=>350, :height=>250, :legendwidth=>340, :legendheight=>12, :legendx=>5, :legendy=>5, :chartx=>70, :chartwidth=>262, :titlesize=>12, :legendsize=>10, :chartsize=>:small, :totalwidth=>350, :totalheight=>75, :charty=>21, :chartheight=>35, :no_legend=>true, :no_xlabels=>nil, :barchartheight=>125, :barcharty=>100, :piechartx=>42, :piecharty=>67, :composite=>true})
+      @chart.add(:axis_category_text, [""])
+      @chart.add(:series, "No records found for this chart", [{:value=>0}])
+      lambda { @chart.to_xml }.should_not raise_error
+    end
+
+    it "embedded javascript url with single quotes escaped" do
+      @chart = Ziya::Charts::Base.new("HTA9VRF7P2O.H4X5CWK-2XOI1X0-7L")
+      @chart.add(:theme, "miq")
+      @chart.add(:user_data, :title, "CPU (Mhz)")
+      @chart.add(:user_data, :show_title, true)
+      @chart.add(:user_data, :graph_options, {:title=>"CPU (Mhz)", :type=>"Line", :columns=>["cpu_usagemhz_rate_average", "max_derived_cpu_available", "min_cpu_usagemhz_rate_average", "max_cpu_usagemhz_rate_average", "trend_max_cpu_usagemhz_rate_average"], :menu=>["Chart-Current-Hourly:Hourly for this day", "Chart-VMs-topday:Top VMs on this day", "Timeline-Current-Daily:Daily events on this Host", "Timeline-Current-Hourly:Hourly events on this Host", "Display-VMs-on:VMs that were running"], :trends=>["max_derived_cpu_available:Projected to hit available"], :chart2=>{:type=>"Line", :title=>"VMs", :columns=>["derived_vm_count_on"]}, :link_url=>"javascript:miqAsyncAjax(\\'/host/perf_chart_chooser/5?chart_link=0\\')", :zoom_url=>"javascript:miqAsyncAjax(\\'/host/perf_chart_chooser/5?chart_zoom=0\\')", :link_data_url=>"javascript:miqChartLinkData( _col_, _row_, _value_, _category_, _series_, _id_ )", :axis_skip=>3, :chart_type=>:performance, :width=>350, :height=>250, :legendwidth=>340, :legendheight=>12, :legendx=>5, :legendy=>5, :chartx=>70, :chartwidth=>262, :titlesize=>12, :legendsize=>10, :chartsize=>:small, :totalwidth=>350, :totalheight=>75, :charty=>21, :chartheight=>35, :no_legend=>true, :no_xlabels=>nil, :barchartheight=>125, :barcharty=>100, :piechartx=>42, :piecharty=>67, :composite=>true})
+      @chart.add(:axis_category_text, [""])
+      @chart.add(:series, "No records found for this chart", [{:value=>0}])
+      lambda { @chart.to_xml }.should_not raise_error
+    end
+
     it "should support setting yaml styles directly" do
       @chart.add( :styles, "--- !ruby/object:Ziya::Charts::Base\n" )
       @chart.to_xml.should == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><chart></chart>"

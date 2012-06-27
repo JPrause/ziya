@@ -31,7 +31,15 @@ module Ziya
       def escape_url( url )
         url ? CGI.escape( url.gsub( /&amp;/, '&' ) ) : url
       end
-   
+
+      def escape_yaml_url(url)
+        if url =~ /\\'/
+          url
+        else
+          url.gsub(/'/,'\\\\\&')
+        end
+      end
+
       # All this stolen form rails to make Ziya work with other fmks....    
       def ziya_tag(name, options = nil, open = false, escape = true)
        "<#{name}#{tag_options(options, escape) if options}" + (open ? ">" : " />")
