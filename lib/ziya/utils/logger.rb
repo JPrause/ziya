@@ -38,16 +38,6 @@ module Ziya
         :log_file             => $stdout        ,
         :log_file_age         => 'daily'.freeze ,
         :log_file_keep_count  => 7              ,
-
-        # email logging options
-        #   buffsize -> number of log events used as a threshold to send an
-        #               email.  If that is not reached before the program
-        #               exists then the at_exit handler for logging will flush
-        #               the log to smtp.
-        :email_alerts_to      => nil    ,
-        :email_alert_level    => :error ,
-        :email_alert_server   => nil    ,
-        :email_alert_buffsize => 200    ,
       }
     end
 
@@ -62,7 +52,6 @@ module Ziya
       # already have loggers
       @appenders = []
       @appenders << log_file_appender if @options[:log_file]
-      @appenders << email_appender if @options[:email_alerts_to]
 
       @log.appenders = @appenders
       @log.level = @options[:log_level]
@@ -88,26 +77,6 @@ module Ziya
       else
         raise ConfigurationError, "Invalid :log_file option [#{@options[:log_file].inspect}]"
       end
-    end
-
-    # an email appender that uses :email_alerts_to option to send emails to.
-    # :email_alerts_to can either be a singe email address as a string or an
-    # Array of email addresses.  Any other option for :email_alerts_to is
-    # invalid and raises an error.
-    #
-    def email_appender #:nodoc:
-      email_alerts_to = [ @options[:email_alerts_to] ].flatten.reject { |x| x == nil }
-      raise ConfigurationError, "Invalid :email_alerts_to option [#{@options[:email_alerts_to].inspect}]" unless email_alerts_to.size > 0
-      ::Logging::Appenders::Email.new("#{@log.name}-email_appender",
-                                      {
-                                        :level    => @options[:email_alert_level],
-                                        :layout   => @layout,
-                                        :from     => "#{@log.name}",
-                                        :to       => "#{email_alerts_to.join(', ')}",
-                                        :subject  => "Logging Alert from #{@log.name} on #{ENV['HOSTNAME']}",
-                                        :server   => @options[:email_alert_server],
-                                        :buffsize => @options[:email_alert_buffsize], # lines 
-      })
     end
 
     # create a new logger thi logger has no options when it is created although 
