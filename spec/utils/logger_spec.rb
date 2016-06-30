@@ -3,20 +3,6 @@ require 'stringio'
 require "ziya/utils/logger"
 
 describe Ziya::Logger do
-  it "raises an error if the email addresses passed in is empty" do
-    lambda { Ziya::Logger.new( { :email_alerts_to => [] } ) }.should raise_error( Ziya::Logger::ConfigurationError )
-  end
-
-  it "configures an email appender if :email_alerts is set" do
-    l = Ziya::Logger.new( { :logger_name => "Test2", :email_alerts_to => "fernand@invalid.address", :email_alert_level => :off })
-    l.email_appender.should_not == nil
-  end
-
-  it "does not configure an email appender if :email_alerts is not set" do
-    l = Ziya::Logger.new( { :logger_name => "Test3" })
-    lambda { l.email_appender }.should raise_error( Ziya::Logger::ConfigurationError )
-  end
-
   it "raises an error if an invalid object is passed in for the :log_file" do
     lambda { l = Ziya::Logger.new( { :log_file => Object.new } ) }.should raise_error( Ziya::Logger::ConfigurationError )
   end
