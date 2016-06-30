@@ -1,10 +1,3 @@
-source :rubygems
+source 'https://rubygems.org'
 
-gem "logging"
-gem "color"
-
-group :development do
-  gem "bones"
-  gem "bones-git"
-  gem "bones-extras"
-end
+gemspec
